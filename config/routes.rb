@@ -7,6 +7,7 @@ Rails.application.routes.draw do
       namespace :private do
         scope :users do
           post '/', to: 'users#create', as: :create
+          post '/login', to: 'users#login', as: :login
         end
       end
     end

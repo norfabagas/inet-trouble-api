@@ -69,6 +69,43 @@ paths:
               - name
               - email
               - password
+  "/api/v1/private/users/login":
+    post:
+      summary: Authenticate user
+      tags:
+      - User
+      parameters: []
+      responses:
+        '200':
+          description: Authenticated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  token:
+                    type: string
+                required:
+                - success
+                - message
+                - token
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+              required:
+              - email
+              - password
 servers:
 - url: http://{defaultHost}
   variables:

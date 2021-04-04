@@ -13,6 +13,21 @@ class Api::V1::Private::UsersController < ApplicationController
     end
   end
 
+  def login
+    email = params[:email]
+    password = params[:password]
+    user = User.find_by_email(email)
+
+    if user&.authenticate_password(password)
+      @token = encode(payload(user.id))
+      @message = "Authenticated"
+      render_http_status 200
+    else
+      @message = "Authentication failed"
+      render_http_status 400
+    end
+  end
+
   private
 
   def user_params
