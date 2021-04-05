@@ -2,6 +2,9 @@ class User < ApplicationRecord
   # use bcrypt to validate password
   has_secure_password
 
+  # model relations
+  has_many :internet_troubles
+
   validates :email,
             :password, 
             :name,
