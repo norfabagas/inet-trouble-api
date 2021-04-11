@@ -332,11 +332,7 @@ paths:
                 email:
                   type: string
                 trouble_id:
-<<<<<<< HEAD
-                  type: int
-=======
                   type: integer
->>>>>>> feature/public-endpoints
               required:
               - email
               - trouble_id
