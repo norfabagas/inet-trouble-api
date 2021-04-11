@@ -198,7 +198,7 @@ RSpec.describe "Api::V1::Private::InternetTroubles", type: :request do
       
       response '404', 'Not Found' do
         let (:Authorization) { "Bearer #{token}" }
-        let (:id) { "#{time.to_i.to_s}" }
+        let (:id) { "#{Time.now.to_i.to_s}" }
         let (:internet_trouble) {
           {
             trouble: '',
@@ -211,7 +211,7 @@ RSpec.describe "Api::V1::Private::InternetTroubles", type: :request do
         schema  type: :object,
                 properties: {
                   success: { type: :boolean },
-                  message: { type: :object }
+                  message: { type: :string }
                 },
                 required: [
                   :success,
