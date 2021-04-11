@@ -332,7 +332,7 @@ paths:
                 email:
                   type: string
                 trouble_id:
-                  type: int
+                  type: integer
               required:
               - email
               - trouble_id

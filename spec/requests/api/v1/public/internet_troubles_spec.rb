@@ -24,7 +24,7 @@ RSpec.describe "Api::V1::Public::InternetTroubles", type: :request do
                   type: :object,
                   properties: {
                     email: { type: :string },
-                    trouble_id: { type: :int }
+                    trouble_id: { type: :integer }
                   },
                   required: [
                     :email,
