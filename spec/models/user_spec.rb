@@ -2,8 +2,8 @@ require 'rails_helper'
 
 RSpec.describe User, type: :model do
   # crete a new record first
-  described_class.create(email: 'alpha@test.com',
-                        name: 'alpha_test',
+  user = User.create(email: 'alpha@test.com',
+                        name: 'alpha test',
                         password: 'alpha_test')
 
   # use subject as test material
@@ -34,7 +34,7 @@ RSpec.describe User, type: :model do
   end
 
   it 'is not valid with email that already been taken' do
-    subject.email = 'alpha@test.com'
+    subject.email = user.email
     expect(subject).to_not be_valid
   end
 

@@ -4,6 +4,78 @@ info:
   title: API V1
   version: v1
 paths:
+  "/api/v1/private/internet_troubles":
+    post:
+      summary: Create new internet trouble
+      tags:
+      - InternetTrouble
+      parameters:
+      - name: Authorization
+        in: header
+        schema:
+          type: string
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  internet_trouble:
+                    type: object
+                    properties:
+                      trouble:
+                        type: string
+                      status:
+                        type: string
+                        nullable: true
+                      category:
+                        type: string
+                        nullable: true
+                      is_predicted:
+                        type: boolean
+                    required:
+                    - trouble
+                    - is_predicted
+                required:
+                - success
+                - message
+                - internet_trouble
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: object
+                required:
+                - success
+                - message
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                trouble:
+                  type: string
+                category:
+                  type: string
+                status:
+                  type: string
+                is_predicted:
+                  type: boolean
+              required:
+              - trouble
   "/api/v1/private/users":
     post:
       summary: Create new user
@@ -106,6 +178,12 @@ paths:
               required:
               - email
               - password
+securityDefinitions:
+  Bearer:
+    description: Auth with Bearer
+    type: apiKey
+    name: Authorization
+    in: header
 servers:
 - url: http://{defaultHost}
   variables:
