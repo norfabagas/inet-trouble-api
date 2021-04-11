@@ -29,6 +29,8 @@ paths:
                   internet_trouble:
                     type: object
                     properties:
+                      id:
+                        type: integer
                       trouble:
                         type: string
                       status:
@@ -40,6 +42,7 @@ paths:
                       is_predicted:
                         type: boolean
                     required:
+                    - id
                     - trouble
                     - is_predicted
                 required:
@@ -76,6 +79,93 @@ paths:
                   type: boolean
               required:
               - trouble
+  "/api/v1/private/internet_troubles/{id}/edit":
+    put:
+      summary: Update created internet trouble
+      tags:
+      - InternetTrouble
+      parameters:
+      - name: Authorization
+        in: header
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  internet_trouble:
+                    type: object
+                    properties:
+                      trouble:
+                        type: string
+                        nullable: true
+                      status:
+                        type: string
+                        nullable: true
+                      category:
+                        type: string
+                        nullable: true
+                      is_predicted:
+                        type: boolean
+                required:
+                - success
+                - message
+                - internet_trouble
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: object
+                required:
+                - success
+                - message
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                required:
+                - success
+                - message
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                trouble:
+                  type: string
+                category:
+                  type: string
+                status:
+                  type: string
+                is_predicted:
+                  type: boolean
   "/api/v1/private/users":
     post:
       summary: Create new user
