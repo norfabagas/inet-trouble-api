@@ -268,6 +268,74 @@ paths:
               required:
               - email
               - password
+  "/api/v1/internet_troubles":
+    post:
+      summary: Internet Trouble
+      tags:
+      - InternetTrouble
+      parameters: []
+      responses:
+        '200':
+          description: Show Internet Trouble
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  internet_trouble:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      trouble:
+                        type: string
+                      status:
+                        type: string
+                        nullable: true
+                      category:
+                        type: string
+                        nullable: true
+                      is_predicted:
+                        type: boolean
+                    required:
+                    - id
+                    - trouble
+                    - is_predicted
+                required:
+                - success
+                - message
+                - internet_trouble
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                required:
+                - success
+                - message
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                trouble_id:
+                  type: int
+              required:
+              - email
+              - trouble_id
 securityDefinitions:
   Bearer:
     description: Auth with Bearer
