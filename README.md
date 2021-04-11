@@ -1,24 +1,26 @@
-# README
+# Internet Trouble API
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Requirements
+- Ruby : 3.0.0
+- Rails : 6.1.3.1
+- Bundler : 2.2.3
+- PostgreSQL : ^9.3
 
-Things you may want to cover:
+## Run locally
+- git clone this repository
+- install ruby 3.0.0
+- install bundler 2.2.3
+- install postgresql 9.3
+- run `bundle install` to install all required libraries
+- generate .env file (`cp .env.example .env`) and fill all required values
+- create db (`rake db:create`)
+- migrate db (`rake db:migrate`)
+- run server (`rails s`)
 
-* Ruby version
+## API Docs
+- refer to /api-docs to view & explore created API Documentations
+## Run tests
+`bundle exec rspec`
 
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+## Generate api docs
+`RAILS_ENV=test rails rswag`
