@@ -12,6 +12,19 @@ class ApplicationController < ActionController::API
     end
   end
 
+  def authenticated?
+    !(token && decode(token)).nil? ? !User.find(decode(token)).nil? : false
+  end
+
+  def authenticate
+    if authenticated?
+      @user = User.find(decode(token))
+    else
+      render  json:   { success: false, message: 'Unauthorized' },
+              status: 403
+    end
+  end
+
   def render_http_status(http_status)
     @status = http_status
     render status: @status

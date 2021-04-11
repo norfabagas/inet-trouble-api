@@ -6,8 +6,12 @@ Rails.application.routes.draw do
     namespace :v1 do
       namespace :private do
         scope :users do
-          post '/', to: 'users#create', as: :create
-          post '/login', to: 'users#login', as: :login
+          post '/', to: 'users#create', as: :users_create
+          post '/login', to: 'users#login', as: :users_login
+        end
+        scope :internet_troubles do
+          post '/', to: 'internet_troubles#create', as: :internet_troubles_create
+          put '/:id/edit', to: 'internet_troubles#edit', as: :internet_troubles_edit
         end
       end
     end

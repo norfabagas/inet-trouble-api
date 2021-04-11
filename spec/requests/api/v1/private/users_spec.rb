@@ -5,6 +5,10 @@ include JsonWebToken
 RSpec.describe 'api/v1/private/users', type: :request do
   path '/api/v1/private/users' do
     post 'Create new user' do
+      name = "test"
+      email = "#{Time.now.to_i.to_s}@mail.com"
+      password = "password"
+
       tags 'User'
       consumes 'application/json'
       produces 'application/json'
@@ -27,9 +31,9 @@ RSpec.describe 'api/v1/private/users', type: :request do
 
       response '201', 'User created' do
         let (:user) {
-          { name: 'test',
-            email: 'test@mail.com',
-            password: 'password'   
+          { name: name,
+            email: email,
+            password: password   
           }
         }
         schema  type: :object,
@@ -59,8 +63,8 @@ RSpec.describe 'api/v1/private/users', type: :request do
         run_test! do |response|
           data = JSON.parse(response.body)
           expect(data['success']).to eq(true)
-          expect(data['user']['name']).to eq('test')
-          expect(data['user']['email']).to eq('test@mail.com')
+          expect(data['user']['name']).to eq(name)
+          expect(data['user']['email']).to eq(email)
         end
 
       end
@@ -91,7 +95,7 @@ RSpec.describe 'api/v1/private/users', type: :request do
     # First, create user for this test
     user = User.create!(
       name: 'Test',
-      email: "#{Time.now.to_i.to_s}@users.com", 
+      email: "#{Time.now.to_i.to_s}@#{Time.now.to_i.to_s}.com", 
       password: 'password'
     )
     
