@@ -11,6 +11,7 @@ Rails.application.routes.draw do
         end
         scope :internet_troubles do
           post '/', to: 'internet_troubles#create', as: :internet_troubles_create
+          put '/:id/edit', to: 'internet_troubles#edit', as: :internet_troubles_edit
         end
       end
     end

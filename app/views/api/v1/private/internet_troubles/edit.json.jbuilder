@@ -1,8 +1,7 @@
 json.success @success
 json.message @message
-if @success
+if @status == 200
   json.internet_trouble do
-    json.id @internet_trouble.id
     json.trouble @internet_trouble.trouble
     json.status @internet_trouble.status
     json.category @internet_trouble.category
