@@ -4,19 +4,34 @@ info:
   title: API V1
   version: v1
 paths:
-  "/api/v1/private/internet_troubles":
-    post:
-      summary: Create new internet trouble
+  "/api/v1/private/get_troubles":
+    get:
+      summary: Internet Troubles
       tags:
-      - InternetTrouble
+      - Admin
       parameters:
       - name: Authorization
         in: header
         schema:
           type: string
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: size
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: type
+        in: query
+        required: false
+        schema:
+          type: string
       responses:
-        '201':
-          description: Created
+        '200':
+          description: Get internet troubles
           content:
             application/json:
               schema:
@@ -26,31 +41,20 @@ paths:
                     type: boolean
                   message:
                     type: string
-                  internet_trouble:
-                    type: object
-                    properties:
-                      id:
-                        type: integer
-                      trouble:
-                        type: string
-                      status:
-                        type: string
-                        nullable: true
-                      category:
-                        type: string
-                        nullable: true
-                      is_predicted:
-                        type: boolean
-                    required:
-                    - id
-                    - trouble
-                    - is_predicted
+                  page:
+                    type: integer
+                  size:
+                    type: integer
+                  internet_troubles:
+                    type: array
                 required:
                 - success
                 - message
-                - internet_trouble
-        '400':
-          description: Validation error
+                - page
+                - size
+                - internet_troubles
+        '403':
+          description: Unauthorized
           content:
             application/json:
               schema:
@@ -59,26 +63,10 @@ paths:
                   success:
                     type: boolean
                   message:
-                    type: object
+                    type: string
                 required:
                 - success
                 - message
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                trouble:
-                  type: string
-                category:
-                  type: string
-                status:
-                  type: string
-                is_predicted:
-                  type: boolean
-              required:
-              - trouble
   "/api/v1/private/internet_troubles/{id}/edit":
     put:
       summary: Update created internet trouble
@@ -166,6 +154,81 @@ paths:
                   type: string
                 is_predicted:
                   type: boolean
+  "/api/v1/private/internet_troubles":
+    post:
+      summary: Create new internet trouble
+      tags:
+      - InternetTrouble
+      parameters:
+      - name: Authorization
+        in: header
+        schema:
+          type: string
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  internet_trouble:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      trouble:
+                        type: string
+                      status:
+                        type: string
+                        nullable: true
+                      category:
+                        type: string
+                        nullable: true
+                      is_predicted:
+                        type: boolean
+                    required:
+                    - id
+                    - trouble
+                    - is_predicted
+                required:
+                - success
+                - message
+                - internet_trouble
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: object
+                required:
+                - success
+                - message
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                trouble:
+                  type: string
+                category:
+                  type: string
+                status:
+                  type: string
+                is_predicted:
+                  type: boolean
+              required:
+              - trouble
   "/api/v1/private/users":
     post:
       summary: Create new user
@@ -336,7 +399,7 @@ paths:
               required:
               - email
               - trouble_id
-securityDefinitions:
+securitySchemes:
   Bearer:
     description: Auth with Bearer
     type: apiKey

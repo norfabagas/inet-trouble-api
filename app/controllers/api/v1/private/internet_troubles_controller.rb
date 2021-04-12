@@ -19,7 +19,12 @@ class Api::V1::Private::InternetTroublesController < ApplicationController
   def edit
     params[:user_id] = @user.id
     id = params[:id]
-    @internet_trouble = InternetTrouble.where(id: params[:id], user_id: params[:user_id]).first
+
+    if is_admin?
+      @internet_trouble = InternetTrouble.find(params[:id]) rescue nil
+    else
+      @internet_trouble = InternetTrouble.where(id: params[:id], user_id: params[:user_id]).first
+    end
     if @internet_trouble
       if @internet_trouble.update(internet_trouble_params)
         @success = true

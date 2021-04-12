@@ -17,9 +17,11 @@ class ApplicationController < ActionController::API
   end
 
   def is_admin?
-    @is_admin = (!@user.role.nil? && @user.role == 'admin') ? true : false
+    (!@user.role.nil? && @user.role == 'admin') ? true : false
+  end
 
-    unless @is_admin
+  def check_is_admin
+    unless is_admin?
       render  json: { success: false, message: 'Unauthorized' },
               status: 403
     end

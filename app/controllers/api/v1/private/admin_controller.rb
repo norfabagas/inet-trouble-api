@@ -1,6 +1,6 @@
 class Api::V1::Private::AdminController < ApplicationController
   before_action :authenticate
-  before_action :is_admin?
+  before_action :check_is_admin
 
   def get_troubles
     available_types = ['all', 'read', 'unread']
