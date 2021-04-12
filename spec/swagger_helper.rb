@@ -22,7 +22,7 @@ RSpec.configure do |config|
         version: 'v1'
       },
       paths: {},
-      securityDefinitions: {
+      securitySchemes: {
         Bearer: {
           description: "Auth with Bearer",
           type: :apiKey,
