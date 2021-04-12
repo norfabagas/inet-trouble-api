@@ -16,6 +16,10 @@ class ApplicationController < ActionController::API
     !(token && decode(token)).nil? ? !User.find(decode(token)).nil? : false
   end
 
+  def is_admin?
+    (!@user.role.nil? && @user.role == 'admin') ? true : false
+  end
+
   def authenticate
     if authenticated?
       @user = User.find(decode(token))
