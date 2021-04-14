@@ -94,7 +94,7 @@ RSpec.describe 'api/v1/private/users', type: :request do
     
     # First, create user for this test
     user = User.create!(
-      name: 'Test',
+      name: 'Test name with space',
       email: "#{Time.now.to_i.to_s}@#{Time.now.to_i.to_s}.com", 
       password: 'password'
     )
@@ -130,12 +130,14 @@ RSpec.describe 'api/v1/private/users', type: :request do
                 properties: {
                   success: { type: :boolean },
                   message: { type: :string },
+                  name: { type: :string },
                   regular_user: { type: :boolean },
                   token: { type: :string }
                 },
                 required: [
                   :success,
                   :message,
+                  :name,
                   :token,
                   :regular_user,
                 ]
@@ -145,6 +147,7 @@ RSpec.describe 'api/v1/private/users', type: :request do
           token = JsonWebToken.encode(payload)
           data = JSON.parse(response.body)
           expect(data['success']).to eq(true)
+          expect(data['name']).to eq('Test name with space')
           expect(data['token']).to eq(token)
           expect(data['regular_user']).to eq(true)
         end

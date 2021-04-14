@@ -312,6 +312,8 @@ paths:
                     type: boolean
                   message:
                     type: string
+                  name:
+                    type: string
                   regular_user:
                     type: boolean
                   token:
@@ -319,6 +321,7 @@ paths:
                 required:
                 - success
                 - message
+                - name
                 - token
                 - regular_user
       requestBody:
