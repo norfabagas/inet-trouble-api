@@ -20,7 +20,8 @@ class Api::V1::Private::InternetTroublesController < ApplicationController
     else
       @internet_troubles = InternetTrouble.get_all
     end
-    @internet_troubles.offset(@page)
+    @internet_troubles.where('user_id = ?', @user.id)
+                      .offset(@page)
                       .limit(@size)
                       .order('created_at desc')
   end
