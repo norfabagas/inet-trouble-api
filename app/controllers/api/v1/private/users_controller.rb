@@ -16,13 +16,17 @@ class Api::V1::Private::UsersController < ApplicationController
   def login
     email = params[:email]
     password = params[:password]
-    user = User.find_by_email(email)
+    @user = User.find_by_email(email)
+    
+    @success = true
 
-    if user&.authenticate_password(password)
-      @token = encode(payload(user.id))
+    if @user&.authenticate_password(password)
+      @token = encode(payload(@user.id))
       @message = "Authenticated"
+      @regular_user = !is_admin?
       render_http_status 200
     else
+      @success = false
       @message = "Authentication failed"
       render_http_status 400
     end

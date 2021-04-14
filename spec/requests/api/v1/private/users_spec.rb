@@ -130,12 +130,14 @@ RSpec.describe 'api/v1/private/users', type: :request do
                 properties: {
                   success: { type: :boolean },
                   message: { type: :string },
+                  regular_user: { type: :boolean },
                   token: { type: :string }
                 },
                 required: [
                   :success,
                   :message,
-                  :token
+                  :token,
+                  :regular_user,
                 ]
         
         run_test! do |response|
@@ -144,6 +146,7 @@ RSpec.describe 'api/v1/private/users', type: :request do
           data = JSON.parse(response.body)
           expect(data['success']).to eq(true)
           expect(data['token']).to eq(token)
+          expect(data['regular_user']).to eq(true)
         end
       end
     end

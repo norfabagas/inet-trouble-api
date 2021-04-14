@@ -312,12 +312,15 @@ paths:
                     type: boolean
                   message:
                     type: string
+                  regular_user:
+                    type: boolean
                   token:
                     type: string
                 required:
                 - success
                 - message
                 - token
+                - regular_user
       requestBody:
         content:
           application/json:

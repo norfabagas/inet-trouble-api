@@ -1,8 +1,6 @@
+json.success @success
+json.message @message
 if @status == 200
-  json.success true
-  json.message @message
+  json.regular_user @regular_user
   json.token @token
-elsif @status == 400
-  json.success false
-  json.message @message
 end
