@@ -14,6 +14,7 @@ Rails.application.routes.draw do
           post '/login', to: 'users#login', as: :users_login
         end
         scope :internet_troubles do
+          get '/', to: 'internet_troubles#index', as: :internet_troubles_index
           post '/', to: 'internet_troubles#create', as: :internet_troubles_create
           put '/:id/edit', to: 'internet_troubles#edit', as: :internet_troubles_edit
         end

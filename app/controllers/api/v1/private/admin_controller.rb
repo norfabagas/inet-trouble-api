@@ -10,6 +10,8 @@ class Api::V1::Private::AdminController < ApplicationController
     @type = (available_types.include? params[:type]) ? params[:type] : 'all'
     @success = true
     @message = 'Internet Troubles data'
+    @total_size = InternetTrouble.count
+    @total_page = (@total_size / @size).ceil
 
     if @type == 'read'
       @internet_troubles = InternetTrouble.read_by_admin

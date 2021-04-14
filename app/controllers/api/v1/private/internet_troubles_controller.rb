@@ -1,7 +1,30 @@
 class Api::V1::Private::InternetTroublesController < ApplicationController  
   
   before_action :authenticate
+
+  def index
+    available_types = ['all', 'read', 'unread']
   
+    @page = params[:page].to_i.zero? ? 1 : params[:page].to_i
+    @size = params[:size].to_i.zero? ? 10 : params[:size].to_i
+    @type = (available_types.include? params[:type]) ? params[:type] : 'all'
+    @success = true
+    @message = 'Internet Troubles data'
+    @total_size = InternetTrouble.count
+    @total_page = (@total_size / @size).ceil
+
+    if @type == 'read'
+      @internet_troubles = InternetTrouble.read_by_admin
+    elsif @type == 'unread'
+      @internet_troubles = InternetTrouble.unread_by_admin
+    else
+      @internet_troubles = InternetTrouble.get_all
+    end
+    @internet_troubles.offset(@page)
+                      .limit(@size)
+                      .order('created_at desc')
+  end
+
   def create
     params[:user_id] = @user.id
     @internet_trouble = InternetTrouble.create(internet_trouble_params)

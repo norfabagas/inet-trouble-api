@@ -60,13 +60,32 @@ RSpec.describe "Api::V1::Private::Admins", type: :request do
                   message: { type: :string },
                   page: { type: :integer },
                   size: { type: :integer },
-                  internet_troubles: { type: :array }
+                  total_page: { type: :integer },
+                  total_size: { type: :integer },
+                  internet_troubles: { 
+                    type: :array,
+                    items: {
+                      properties: {
+                        id: { type: :integer },
+                        user_id: { type: :integer },
+                        trouble: { type: :string },
+                        status: { type: :string },
+                        category: { type: :string },
+                        is_predicted: { type: :boolean },
+                        created_at: { type: :string },
+                        updated_at: { type: :string },
+                        is_read_by_admin: { type: :string, nullable: true }
+                      }
+                    } 
+                  }
                 },
                 required: [
                   :success,
                   :message,
                   :page,
                   :size,
+                  :total_page,
+                  :total_size,
                   :internet_troubles
                 ]
         run_test! do |response|

@@ -222,4 +222,92 @@ RSpec.describe "Api::V1::Private::InternetTroubles", type: :request do
 
     end
   end
+
+  path '/api/v1/private/internet_troubles' do
+    get 'Get internet troubles' do
+      tags 'InternetTrouble'
+      consumes 'application/json'
+      produces 'application/json'
+
+      parameter name: :Authorization,
+                in: :header,
+                type: :string
+
+      parameter name: :page,
+                in: :query,
+                type: :string,
+                required: false
+      
+      parameter name: :size,
+                in: :query,
+                type: :string,
+                required: false
+
+      parameter name: :type,
+                in: :query,
+                type: :string,
+                required: false
+
+      response '200', 'Get internet troubles' do
+        let (:Authorization) { "Bearer #{token}" }
+
+        schema  type: :object,
+                properties: {
+                  success: { type: :boolean },
+                  message: { type: :string },
+                  page: { type: :integer },
+                  size: { type: :integer },
+                  total_page: { type: :integer },
+                  total_size: { type: :integer },
+                  internet_troubles: { 
+                    type: :array,
+                    items: {
+                      properties: {
+                        id: { type: :integer },
+                        user_id: { type: :integer },
+                        trouble: { type: :string },
+                        status: { type: :string },
+                        category: { type: :string },
+                        is_predicted: { type: :boolean },
+                        created_at: { type: :string },
+                        updated_at: { type: :string },
+                        is_read_by_admin: { type: :string, nullable: true }
+                      }
+                    } 
+                  }
+                },
+                required: [
+                  :success,
+                  :message,
+                  :page,
+                  :size,
+                  :total_page,
+                  :total_size,
+                  :internet_troubles
+                ]
+        run_test! do |response|
+          data = JSON.parse(response.body)
+          expect(data['success']).to eq(true)
+          expect(data['page']).to eq(1)
+          expect(data['size']).to eq(10)
+          expect(data['type']).to eq('all')
+        end
+      end
+
+      response '403', 'Unauthorized' do
+        let (:Authorization) { "Bearer token" }
+        schema  type: :object,
+                properties: {
+                  success: { type: :boolean },
+                  message: { type: :string }
+                },
+                required: [
+                  :success,
+                  :message
+                ]
+        run_test!
+      end
+
+    end
+  end
 end
