@@ -10,20 +10,19 @@ class Api::V1::Private::InternetTroublesController < ApplicationController
     @type = (available_types.include? params[:type]) ? params[:type] : 'all'
     @success = true
     @message = 'Internet Troubles data'
-    @total_size = InternetTrouble.count
-    @total_page = (@total_size / @size).ceil
-
-    @internet_troubles = @user.internet_troubles
 
     if @type == 'read'
-      @internet_troubles.read_by_admin
+      @internet_troubles = @user.internet_troubles.read_by_admin
     elsif @type == 'unread'
-      @internet_troubles.unread_by_admin
+      @internet_troubles = @user.internet_troubles.unread_by_admin
     else
-      @internet_troubles.get_all
+      @internet_troubles = @user.internet_troubles.get_all
     end
-    @internet_troubles.where('internet_troubles.user_id = ?', @user.id)
-                      .offset(@page)
+
+    @total_size = @internet_troubles.count
+    @total_page = (@total_size / @size).ceil
+
+    @internet_troubles.offset(@page)
                       .limit(@size)
                       .order('created_at desc')
   end

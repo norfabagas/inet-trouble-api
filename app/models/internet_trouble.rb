@@ -17,7 +17,7 @@ class InternetTrouble < ApplicationRecord
   validates :is_predicted,
             inclusion: { in: [true, false] }
 
- scope  :read_by_admin, -> { where("is_read_by_admin is not null") }
- scope  :unread_by_admin, -> { where("is_read_by_admin is null") }
+ scope  :read_by_admin, -> { where.not(is_read_by_admin: nil) }
+ scope  :unread_by_admin, -> { where(is_read_by_admin: nil) }
  scope  :get_all, -> { where("is_read_by_admin is null or is_read_by_admin is not null") }
 end
