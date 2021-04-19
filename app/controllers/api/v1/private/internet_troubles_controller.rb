@@ -16,18 +16,18 @@ class Api::V1::Private::InternetTroublesController < ApplicationController
     if @type == 'read'
       @internet_troubles = @user.internet_troubles
                                 .read_by_admin
-                                .offset(@page)
+                                .offset(@page - 1)
                                 .limit(@size)
                                 .order(id: :desc)
     elsif @type == 'unread'
       @internet_troubles = @user.internet_troubles
                                 .unread_by_admin
-                                .offset(@page)
+                                .offset(@page - 1)
                                 .limit(@size)
                                 .order(id: :desc)
     else
       @internet_troubles = @user.internet_troubles
-                                .offset(@page)
+                                .offset(@page - 1)
                                 .limit(@size)
                                 .order(id: :desc)
     end
