@@ -6,25 +6,32 @@ class Api::V1::Private::InternetTroublesController < ApplicationController
     available_types = ['all', 'read', 'unread']
   
     @page = params[:page].to_i.zero? ? 1 : params[:page].to_i
-    @size = params[:size].to_i.zero? ? 10 : params[:size].to_i
+    @size = params[:size].to_i.zero? ? 5 : params[:size].to_i
+    @total_size = @user.internet_troubles.count
+    @total_page = (@total_size / @size).ceil
     @type = (available_types.include? params[:type]) ? params[:type] : 'all'
     @success = true
     @message = 'Internet Troubles data'
 
     if @type == 'read'
-      @internet_troubles = @user.internet_troubles.read_by_admin
+      @internet_troubles = @user.internet_troubles
+                                .read_by_admin
+                                .offset(@page)
+                                .limit(@size)
+                                .order(id: :desc)
     elsif @type == 'unread'
-      @internet_troubles = @user.internet_troubles.unread_by_admin
+      @internet_troubles = @user.internet_troubles
+                                .unread_by_admin
+                                .offset(@page)
+                                .limit(@size)
+                                .order(id: :desc)
     else
-      @internet_troubles = @user.internet_troubles.get_all
+      @internet_troubles = @user.internet_troubles
+                                .offset(@page)
+                                .limit(@size)
+                                .order(id: :desc)
     end
-
-    @total_size = @internet_troubles.count
-    @total_page = (@total_size / @size).ceil
-
-    @internet_troubles.offset(@page)
-                      .limit(@size)
-                      .order('created_at desc')
+    byebug
   end
 
   def create
