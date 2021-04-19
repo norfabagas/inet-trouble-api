@@ -6,22 +6,28 @@ class Api::V1::Private::AdminController < ApplicationController
     available_types = ['all', 'read', 'unread']
   
     @page = params[:page].to_i.zero? ? 1 : params[:page].to_i
-    @size = params[:size].to_i.zero? ? 10 : params[:size].to_i
+    @size = params[:size].to_i.zero? ? 5 : params[:size].to_i
     @type = (available_types.include? params[:type]) ? params[:type] : 'all'
     @success = true
     @message = 'Internet Troubles data'
     @total_size = InternetTrouble.count
-    @total_page = (@total_size / @size).ceil
+    @total_page = (@total_size / @size).ceil + 1
 
     if @type == 'read'
       @internet_troubles = InternetTrouble.read_by_admin
+                                            .offset((@page - 1) * @size)
+                                            .limit(@size)
+                                            .order(id: :desc)
     elsif @type == 'unread'
       @internet_troubles = InternetTrouble.unread_by_admin
+                                            .offset((@page - 1) * @size)
+                                            .limit(@size)
+                                            .order(id: :desc)
     else
-      @internet_troubles = InternetTrouble.get_all
+      @internet_troubles = InternetTrouble.offset((@page - 1) * @size)
+                                            .limit(@size)
+                                            .order(id: :desc)
     end
-    @internet_troubles.offset(@page)
-                      .limit(@size)
-                      .order('created_at desc')
+
   end
 end

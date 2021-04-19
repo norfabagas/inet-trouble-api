@@ -8,7 +8,7 @@ class Api::V1::Private::InternetTroublesController < ApplicationController
     @page = params[:page].to_i.zero? ? 1 : params[:page].to_i
     @size = params[:size].to_i.zero? ? 5 : params[:size].to_i
     @total_size = @user.internet_troubles.count
-    @total_page = (@total_size / @size).ceil
+    @total_page = (@total_size / @size).ceil + 1
     @type = (available_types.include? params[:type]) ? params[:type] : 'all'
     @success = true
     @message = 'Internet Troubles data'
@@ -16,18 +16,18 @@ class Api::V1::Private::InternetTroublesController < ApplicationController
     if @type == 'read'
       @internet_troubles = @user.internet_troubles
                                 .read_by_admin
-                                .offset(@page - 1)
+                                .offset((@page - 1) * @size)
                                 .limit(@size)
                                 .order(id: :desc)
     elsif @type == 'unread'
       @internet_troubles = @user.internet_troubles
                                 .unread_by_admin
-                                .offset(@page - 1)
+                                .offset((@page - 1) * @size)
                                 .limit(@size)
                                 .order(id: :desc)
     else
       @internet_troubles = @user.internet_troubles
-                                .offset(@page - 1)
+                                .offset((@page - 1) * @size)
                                 .limit(@size)
                                 .order(id: :desc)
     end
