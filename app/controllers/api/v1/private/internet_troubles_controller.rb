@@ -8,7 +8,10 @@ class Api::V1::Private::InternetTroublesController < ApplicationController
     @page = params[:page].to_i.zero? ? 1 : params[:page].to_i
     @size = params[:size].to_i.zero? ? 5 : params[:size].to_i
     @total_size = @user.internet_troubles.count
-    @total_page = (@total_size / @size).ceil + 1
+    @total_page = (@total_size / @size).ceil + (@total_size % @size > 0 ? 1 : 0)
+    if @total_size <= @size
+      @total_page = 1
+    end
     @type = (available_types.include? params[:type]) ? params[:type] : 'all'
     @success = true
     @message = 'Internet Troubles data'

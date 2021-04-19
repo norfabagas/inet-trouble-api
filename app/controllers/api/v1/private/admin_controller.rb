@@ -11,7 +11,10 @@ class Api::V1::Private::AdminController < ApplicationController
     @success = true
     @message = 'Internet Troubles data'
     @total_size = InternetTrouble.count
-    @total_page = (@total_size / @size).ceil + 1
+    @total_page = (@total_size / @size).ceil + (@total_size % @size > 0 ? 1 : 0)
+    if @total_size <= @size
+      @total_page = 1
+    end
 
     if @type == 'read'
       @internet_troubles = InternetTrouble.read_by_admin
