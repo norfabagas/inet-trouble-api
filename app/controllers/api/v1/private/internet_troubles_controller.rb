@@ -31,7 +31,6 @@ class Api::V1::Private::InternetTroublesController < ApplicationController
                                 .limit(@size)
                                 .order(id: :desc)
     end
-    byebug
   end
 
   def create
