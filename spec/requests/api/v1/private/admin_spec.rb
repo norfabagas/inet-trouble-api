@@ -69,8 +69,8 @@ RSpec.describe "Api::V1::Private::Admins", type: :request do
                         id: { type: :integer },
                         user_id: { type: :integer },
                         trouble: { type: :string },
-                        status: { type: :string },
-                        category: { type: :string },
+                        status: { type: :string, nullable: true },
+                        category: { type: :string, nullable: true },
                         is_predicted: { type: :boolean },
                         created_at: { type: :string },
                         updated_at: { type: :string },
@@ -92,7 +92,7 @@ RSpec.describe "Api::V1::Private::Admins", type: :request do
           data = JSON.parse(response.body)
           expect(data['success']).to eq(true)
           expect(data['page']).to eq(1)
-          expect(data['size']).to eq(10)
+          expect(data['size']).to eq(5)
           expect(data['type']).to eq('all')
         end
       end
@@ -230,4 +230,73 @@ RSpec.describe "Api::V1::Private::Admins", type: :request do
 
     end
   end
+
+  path '/api/v1/private/show_trouble/{id}' do
+    get 'Show specific trouble' do
+      tags 'Admin'
+      consumes 'application/json'
+      produces 'application/json'
+  
+      parameter name: :Authorization,
+                in: :header,
+                type: :string
+  
+      parameter name: :id,
+                in: :path,
+                type: :string
+  
+      response '200', 'Found' do
+        let (:Authorization) { "Bearer #{token}" }
+        let (:id) { "#{user.internet_troubles.first.id}" }
+  
+        schema  type: :object,
+                properties: {
+                  success: { type: :boolean },
+                  message: { type: :string },
+                  internet_trouble: {
+                    type: :object,
+                    properties: {
+                      id: { type: :integer },
+                      trouble: { type: :string, nullable: true },
+                      status: { type: :string, nullable: true },
+                      category: { type: :string, nullable: true },
+                      is_predicted: { type: :boolean },
+                    }
+                  }
+                },
+                required: [
+                  :success,
+                  :message,
+                  :internet_trouble
+                ]
+        run_test! do |response|
+          data = JSON.parse(response.body)
+          expect(data['success']).to eq(true)
+          expect(data['internet_trouble']['id']).to eq(user.internet_troubles.first.id)
+          expect(data['internet_trouble']['trouble']).to eq(user.internet_troubles.first.trouble)
+          expect(data['internet_trouble']['status']).to eq(user.internet_troubles.first.status)
+          expect(data['internet_trouble']['category']).to eq(user.internet_troubles.first.category)
+          expect(data['internet_trouble']['is_predicted']).to eq(user.internet_troubles.first.is_predicted)
+        end
+      end
+      
+      response '404', 'Not Found' do
+        let (:Authorization) { "Bearer #{token}" }
+        let (:id) { 0 }
+
+        schema  type: :object,
+                properties: {
+                  success: { type: :boolean },
+                  message: { type: :string }
+                },
+                required: [
+                  :success,
+                  :message
+                ]
+        run_test!
+      end
+
+    end
+  end
+
 end

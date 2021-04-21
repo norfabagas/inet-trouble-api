@@ -33,4 +33,17 @@ class Api::V1::Private::AdminController < ApplicationController
     end
 
   end
+
+  def show_trouble
+    @internet_trouble = InternetTrouble.where(id: params[:id]).first
+    if @internet_trouble
+      @success = true
+      @message = "Internet trouble"
+      render_http_status 200
+    else
+      @success = false
+      @message = "Not found"
+      render_http_status 404
+    end
+  end
 end

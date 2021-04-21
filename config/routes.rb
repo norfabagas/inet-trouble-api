@@ -9,6 +9,7 @@ Rails.application.routes.draw do
       end
       namespace :private do
         get 'get_troubles', to: 'admin#get_troubles', as: :admin_get_troubles
+        get 'show_trouble/:id', to: 'admin#show_trouble', as: :admin_show_trouble
         scope :users do
           post '/', to: 'users#create', as: :users_create
           post '/login', to: 'users#login', as: :users_login
