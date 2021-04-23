@@ -51,15 +51,15 @@ class Api::V1::Private::InternetTroublesController < ApplicationController
   end
 
   def edit
-    params[:user_id] = @user.id
     id = params[:id]
 
     if is_admin?
       @internet_trouble = InternetTrouble.find(params[:id]) rescue nil
     else
-      @internet_trouble = InternetTrouble.where(id: params[:id], user_id: params[:user_id]).first
+      @internet_trouble = InternetTrouble.where(id: params[:id], user_id: @user.id).first
     end
     if @internet_trouble
+      params[:user_id] = @internet_trouble.user_id
       if @internet_trouble.update(internet_trouble_params)
         @success = true
         @message = 'Internet trouble updated'
